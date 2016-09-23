@@ -185,7 +185,7 @@ mail($your_email,$your_subject,$message,$your_headers);
 </div>
         <div class="bg">
           <h1>6<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'17)</h1>
-          <p class="subhead">June 9 - 10, 2016 | Rome, Italy</p>
+          <p class="subhead">June 9 - 10, 2017 | Rome, Italy</p>
 
           <a href="../papers" class="bg-link">Paper Submission</a> <p class="dot">&middot;</p> <a href="../dates" class="bg-link">Important Dates</a> <p class="dot">&middot;</p> <a href="../registration" class="bg-link">Registration</a>
 
@@ -212,7 +212,7 @@ mail($your_email,$your_subject,$message,$your_headers);
 
         <div class="bg">
           <h1>6<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'17)</h1>
-          <p class="subhead">June 9 - 10, 2016 | Rome, Italy</p>
+          <p class="subhead">June 9 - 10, 2017 | Rome, Italy</p>
 
           <a href="../papers" class="bg-link">Paper Submission</a> <p class="dot">&middot;</p> <a href="../dates" class="bg-link">Important Dates</a> <p class="dot">&middot;</p> <a href="../registration" class="bg-link">Registration</a>
 
