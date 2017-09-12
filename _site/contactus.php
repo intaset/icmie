@@ -2,117 +2,25 @@
 
 $my_email = "info@icmie.net";
 
-/*
+$name=$_POST['Name'];
+$email=$_POST['Email'];
+$message=$_POST['Message'];
+$subject=$_POST['Subject'];
+$headers = "From: " . $_POST['Email'];
+$captcha = false;
 
-Enter the continue link to offer the user after the form is sent.  If you do not change this, your visitor will be given a continue link to your homepage.
-
-If you do change it, remove the "/" symbol below and replace with the name of the page to link to, eg: "mypage.htm" or "http://www.elsewhere.com/page.htm"
-
-*/
-
-$continue = "/";
-
-/*
-
-Step 3:
-
-Save this file (FormToEmail.php) and upload it together with your webpage containing the form to your webspace.  IMPORTANT - The file name is case sensitive!  You must save it exactly as it is named above!  Do not put this script in your cgi-bin directory (folder) it may not work from there.
-
-THAT'S IT, FINISHED!
-
-You do not need to make any changes below this line.
-
-*/
-
-$errors = array();
-
-// Remove $_COOKIE elements from $_REQUEST.
-
-if(count($_COOKIE)){foreach(array_keys($_COOKIE) as $value){unset($_REQUEST[$value]);}}
-
-// Check all fields for an email header.
-
-function recursive_array_check_header($element_value)
-{
-
-global $set;
-
-if(!is_array($element_value)){if(preg_match("/(%0A|%0D|\n+|\r+)(content-type:|to:|cc:|bcc:)/i",$element_value)){$set = 1;}}
-else
-{
-
-foreach($element_value as $value){if($set){break;} recursive_array_check_header($value);}
-
+// check if not robot
+if (isset($_POST['g-recaptcha-response']) && !empty($_POST['g-recaptcha-response'])) {
+  $captcha = true;
+  $secret = '6Lcx9g0TAAAAANTbt48vOTEeZhiP3ZUqSvNAkhOk';
+  //get verify response data
+  $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret.'&response='.$_POST['g-recaptcha-response']);
+  $responseData = json_decode($verifyResponse);
+  if(!($responseData->success))
+    $errors[] = 'We could not verify your CAPTCHA entry. Please try again.';
+  else 
+    mail($my_email,$subject,$message,$headers);
 }
-
-}
-
-recursive_array_check_header($_REQUEST);
-
-if($set){$errors[] = "You cannot send an email header";}
-
-unset($set);
-
-// Validate email field.
-
-if(isset($_REQUEST['email']) && !empty($_REQUEST['email']))
-{
-if(preg_match("/(%0A|%0D|\n+|\r+|:)/i",$_REQUEST['email'])){$errors[] = "Email address may not contain a new line or a colon";}
-
-$_REQUEST['email'] = trim($_REQUEST['email']);
-
-if(substr_count($_REQUEST['email'],"@") != 1 || stristr($_REQUEST['email']," ")){$errors[] = "Email address is invalid";}else{$exploded_email = explode("@",$_REQUEST['email']);if(empty($exploded_email[0]) || strlen($exploded_email[0]) > 64 || empty($exploded_email[1])){$errors[] = "Email address is invalid";}else{if(substr_count($exploded_email[1],".") == 0){$errors[] = "Email address is invalid";}else{$exploded_domain = explode(".",$exploded_email[1]);if(in_array("",$exploded_domain)){$errors[] = "Email address is invalid";}else{foreach($exploded_domain as $value){if(strlen($value) > 63 || !preg_match('/^[a-z0-9-]+$/i',$value)){$errors[] = "Email address is invalid"; break;}}}}}}
-
-}
-
-// Check referrer is from same site.
-
-if(!(isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER']) && stristr($_SERVER['HTTP_REFERER'],$_SERVER['HTTP_HOST']))){$errors[] = "You must enable referrer logging to use the form";}
-
-// Check for a blank form.
-
-function recursive_array_check_blank($element_value)
-{
-
-global $set;
-
-if(!is_array($element_value)){if(!empty($element_value)){$set = 1;}}
-else
-{
-
-foreach($element_value as $value){if($set){break;} recursive_array_check_blank($value);}
-
-}
-
-}
-
-recursive_array_check_blank($_REQUEST);
-
-if(!$set){$errors[] = "You cannot send a blank form";}
-
-unset($set);
-
-// Display any errors and exit if errors exist.
-
-if(count($errors)){foreach($errors as $value){print "$value<br>";} exit;}
-
-if(!defined("PHP_EOL")){define("PHP_EOL", strtoupper(substr(PHP_OS,0,3) == "WIN") ? "\r\n" : "\n");}
-
-// Build message.
-
-function build_message($request_input){if(!isset($message_output)){$message_output ="";}if(!is_array($request_input)){$message_output = $request_input;}else{foreach($request_input as $key => $value){if(!empty($value)){if(!is_numeric($key)){$message_output .= str_replace("_"," ",ucfirst($key)).": ".build_message($value).PHP_EOL.PHP_EOL;}else{$message_output .= build_message($value).", ";}}}}return rtrim($message_output,", ");}
-
-$message = build_message($_REQUEST);
-
-$message = $message . PHP_EOL.PHP_EOL."-- ".PHP_EOL."";
-
-$message = stripslashes($message);
-
-$subject = $_REQUEST['Subject'];
-
-$headers = "From: " . $_REQUEST['Email'];
-
-mail($my_email,$subject,$message,$headers);
 
 ?>
 
@@ -123,14 +31,14 @@ mail($my_email,$subject,$message,$headers);
 <meta name="robots" content="noarchive">
 <meta name="description" content="">
 <meta name="keywords" content="mechanical engineering conference, robotics conference, energy conference, fluid dynamics conference, cfd conference, industrial engineering conference, mechanics conference, heat transfer, instrumentation, combustion, mechatronics, mems, nanotechnology, renewable energy, solid mechanics, fluid flow, flow, multiphase flow, multiphase heat transfer, turbulent flow, fluid mechanics, mechanical engineering, robotics, energy, fluid dynamics, cfd, industrial engineering, mechanics, heat transfer conference, instrumentation conference, combustion conference, mechatronics conference, mems conference, nanotechnology conference, renewable energy conference, solid mechanics conference, fluid flow conference, flow conference, multiphase flow conference, multiphase heat transfer conference, turbulent flow conference, fluid mechanics conference, Aerodynamics, Aerospace Systems and Technology, Applications of AI Techniques in Design and Manufacturing, Applied Mechanics, Automation, Biomechanics, CAD/CAM/CAE, Computational Fluid Dynamics (CFD), Design and Manufacturing, Energy Management, Fluid Dynamics, Fuels and Combustion, Green Manufacturing, Heat and Mass Transfer, HVAC, Industrial Engineering, Industrial Tribology, Instrumentation and Control, Internal Combustion Engines, Materials Preparation and Processing, Mechanical Engineering, Mechanical Engineering Education, Mechatronics, MEMS, Micro-Machining, Modeling of Processes, Nanotechnology, NEMS, Optimization of Systems, Renewable and Non-Renewable Energies, Reverse Engineering, Robotics, Solid Mechanics, Fundamental rock mechanics, Rock properties, experimental rock mechanics and physical modelling, Analytical and numerical methods in rock mechanics and rock engineering, Stability of slopes in civil and mining engineering, Design methodologies and analysis, Rock dynamics, Rock mechanics and rock engineering at historical sites and monuments, Underground excavations in civil and mining engineering, Coupled processes in rock mass for underground storage and waste disposal, Rock mass characterization, Petroleum geomechanics, Instrumentation-monitoring in rock engineering and back analysis, Risk management, New frontiers (GPS, Extraterrestrial Rock Mechanics, Methane Hydrate Exploitation, CO2 Sequestration, Earthquake Prediction), Solid and structural mechanics, Non-linear mechanics, Composite structures, Fracture and damage mechanics, Geo Mechanics, Vibration and control, Smart structures, Micro and nano-mechanics, Bridge structures, Material modelling, Multi body dynamics, Computational fluid dynamics, Turbulence modelling, Fluid mechanics, Bio-mechanics, Hydrodynamics, Multi-phase flow, Multi-physics problems, Multi-scale modelling, Fluid-structure interaction, Porous media mechanics, Novel computational techniques, High performance computing, Transient dynamic problems, Heat transfer, Artificial Intelligence, Composites, Damage Mechanics, Discontinuous Galerkin, Finite Deformation Mechanics, Fluid Mechanics, Geomechanics, Large Scale Linear Algebra, Meshless Methods, Optics and photonics, PDE and SPDE Solutions, Structural Control, Thermodynamics, Biomechanics, Computational Plasticity, Data Mining, Discrete Element Method, Finite Elements, Fluid-Structure Interaction, CPU and HPC, Material Modelling, Mulitscale Bridging, Optimisation, Phase Field Mechanics, Structural Dynamics, Validation and Verification, Boundary Elements, Contract Mechanics, Domain Decomposition, Error Analysis and Adaptivity, Finite Volumes, Fracture and Failure Mechanics, Instability Analysis, Meshing Techniques, Multiphysics, Particle-based Methods, Solid Mechanics, Turbulence Simulation, Wave Propagation, Fracture Mechanics, Fatigue, Failure Analysis, Corrosion, Creep, Non-linear Problems, Dynamic Fracture, Residual Stress, Environmental Effects, Crack Propagation, Repair Technique, Composite Materials, Ceramics and Polymers, Metallic Materials, Concrete, Probabilistic Apects, Risk Analysis, Damage Tolerance, Fracture Control, Computational Methods, Microstructural and Micromechanical Modelling, Mechatronics Engineering, Modeling and Design, Advanced Manufacturing, Advanced Motion Control, Intelligent Control, System Integration, Sensors and Actuators and Networks, Robotics, Mobile Platforms, Unmanned Vehicles, Automotive and Transportation Systems, Vibration and Noise Control, Micro Mechatronics, Mechatronics in Energy Systems, Fault detection and Diagnosis in Mechatronics Systems, Human-Machine Interface, Applications in Systems and Engineering, Fluid Mechanics, Computational Fluid Mechanics, Aerodynamics, Boundary layers and transition, Buoyant flows, Coastal and ocean fluid dynamics, Environmental flows, Flows with heat transfer, Fluid-structure interaction, Free boundary flows, High-speed and chemically reacting flows, Microfluidics, Eddy Simulation, Multiphase flows, Newtonian and Non-Newtonian flows, Reactive and Combustion flows, Complex Fluids, Fluid-Solid Coupling, Combustion Flows, Flow Simulation, Multiphase Flows, Rock Mechanics, Rock dynamics, Basic property, Constitutive relation, New Theory, Numerical analysis and simulation, Stability and risk analysis of underground engineering, Rock fracture mechanism, Rock blasting, Stability analysis of rock engineering, Monitoring and control of rock engineering, The test of rock dynamic parameters, Solid Mechanics, Boundary element methods, Finite element methods, Discrete element methods, Material Mechanics, Structural dynamics, Contact mechanics and tribology, Dynamic failure and fracture, Fracture and damage mechanics, Biomechanics, Linear and nonlinear dynamics, testing, impact and crashworthiness, Modeling and simulation">
-<title>ICMIE'17 - Contact Us</title>
+<title>ICMIE'18 - Contact Us</title>
 
 <meta name="handheldfriendly" content="true">
 <meta name="mobileoptimized" content="240">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="../css/ffhmt.css" rel="stylesheet">
+<link href="../css/style.css" rel="stylesheet">
 <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic|Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon">
 <!--[if IE-9]><html lang="en" class="ie9"><![endif]-->
@@ -152,7 +60,7 @@ mail($my_email,$subject,$message,$headers);
 
 <body>
 <nav id="slide-menu">
-  <h1>ICMIE'17</h1>
+  <h1>ICMIE'18</h1>
   <ul>
     <li><a href="/">Home</a></li>
     <li><a href="../papers">Paper Submissions</a></li>
@@ -195,8 +103,8 @@ mail($my_email,$subject,$message,$headers);
   </div>
 </div>
         <div class="bg">
-          <h1>6<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'17)</h1>
-          <p class="subhead">June 8 - 10, 2017 | Rome, Italy</p>
+          <h1>7<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'18)</h1>
+          <p class="subhead">August 16 - 18, 2018 | Madrid, Spain</p>
 
           <a href="../papers" class="bg-link">Paper Submission</a> <p class="dot">&middot;</p> <a href="../dates" class="bg-link">Important Dates</a> <p class="dot">&middot;</p> <a href="../registration" class="bg-link">Registration</a>
 
@@ -210,7 +118,7 @@ mail($my_email,$subject,$message,$headers);
   </div>
 </div>
 </div>
-<br><p class="body" style="text-align:center!important;">ICMIE'17 is part of the <b>3<sup>rd</sup> World Congress on Mechanical, Chemical, and Material Engineering (MCM'17)</b>. For more information about the congress, please visit the website here: <a href="http://2017.mcmcongress.com/" class="body-link">www.2017.mcmcongress.com</a>.</p>
+<br><p class="body" style="text-align:center!important;">ICMIE'18 is part of the <b>4<sup>th</sup> World Congress on Mechanical, Chemical, and Material Engineering (MCM'18)</b>. For more information about the congress, please visit the website here: <a href="http://2018.mcmcongress.com/" class="body-link">www.2018.mcmcongress.com</a>.</p>
         </div>
     </div>
 
@@ -222,8 +130,8 @@ mail($my_email,$subject,$message,$headers);
         </div>
 
         <div class="bg">
-          <h1>6<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'17)</h1>
-          <p class="subhead">June 8 - 10, 2017 | Rome, Italy</p>
+          <h1>7<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'18)</h1>
+          <p class="subhead">August 16 - 18, 2018 | Madrid, Spain</p>
 
           <a href="../papers" class="bg-link">Paper Submission</a> <p class="dot">&middot;</p> <a href="../dates" class="bg-link">Important Dates</a> <p class="dot">&middot;</p> <a href="../registration" class="bg-link">Registration</a>
 
@@ -237,7 +145,7 @@ mail($my_email,$subject,$message,$headers);
   </div>
 </div>
 </div>
-<br><p class="body" style="text-align:center!important; color: #FFF!important;">ICMIE'17 is part of the <b>3<sup>rd</sup> World Congress on Mechanical, Chemical, and Material Engineering (MCM'17)</b>.<br>For more information about the congress, please visit the website here: <a href="http://2017.mcmcongress.com/" class="body-link">www.2017.mcmcongress.com</a>.</p>
+<br><p class="body" style="text-align:center!important; color: #FFF!important;">ICMIE'18 is part of the <b>4<sup>th</sup> World Congress on Mechanical, Chemical, and Material Engineering (MCM'18)</b>.<br>For more information about the congress, please visit the website here: <a href="http://2018.mcmcongress.com/" class="body-link">www.2018.mcmcongress.com</a>.</p>
         </div>
         </div> 
       </div>
@@ -251,11 +159,14 @@ mail($my_email,$subject,$message,$headers);
       <div id="main-slider" class="liquid-slider">
     <div>
       <h2 class="title">1</h2>
-      <p class="bold">ICMIE 2017:</p>
-      <p class="body">ICMIE 2017 will  be held in Rome, Italy on June 8 - 10, 2017.</p>
+      <p class="bold">ICMIE 2018:</p>
+      <p class="body">ICMIE 2018 will  be held in Madrid, Spain on August 16 - 18, 2018.</p>
 
-      <p class="bold">MCM'17 Workshop</p>
-      <p class="body">As per popular request, the organizing committee has decided to extend the MCM'17 congress to three days (now June 8 - 10, 2017). The new high-level schedule is as follows:</p>
+     <!--  <p class="bold">Deadline Extension:</p>
+      <p class="body">Due to the popular request, the paper submission deadline is extended to March 24, 2018. This is the final deadline extension and the deadlines will not be extended anymore.</p>
+
+      <p class="bold">MCM'18 Workshop</p>
+      <p class="body">As per popular request, the organizing committee has decided to extend the MCM'18 congress to three days (now August 16 - 18, 2018). The new high-level schedule is as follows:</p>
 
       <ul>
         <li>Day 1: Workshop(s) and Registration</li>
@@ -263,12 +174,12 @@ mail($my_email,$subject,$message,$headers);
         <li>Day 2: Main Track Conference Sessions and Gala dinner or Cruise tour</li>
       </ul>
       
-      <p class="body">Registration for the workshop will be 121 EURs (VAT included) and separate from the main conferences. Workshop attendees will receive a certificate of participation. For registration, please visit: <a href="../registration" class="body-link">here</a>.</p>
+      <p class="body">Registration for the workshop will be 122 EURs (VAT included) and separate from the main conferences. Workshop attendees will receive a certificate of participation. For registration, please visit: <a href="../registration" class="body-link">here</a>.</p>
 
       <p class="body">More information to follow; we greatly appreciate your patience!</p>
-<!-- 
+
       <p class="bold">Poster Board Dimensions:</p>
-      <p class="body">Authors presenting via poster boards are to be informed that poster boards are 110 cm height and 80 cm width.</p> -->
+      <p class="body">Authors presenting via poster boards are to be informed that poster boards are 100 cm height and 90 cm width.</p> -->
     </div>          
     <div>
       <h2 class="title">2</h2>
@@ -277,8 +188,8 @@ mail($my_email,$subject,$message,$headers);
     </div>
     <div>
       <h2 class="title">3</h2>
-      <p class="bold">Propose Exhibits, Workshops & More</p>
-      <p class="body">ICMIE attracts a wide range of researchers in the field of mechanics and industrial engineering. As a prominent company in the field of mechanics and industrial engineering, we would like to offer you an exhibit at ICMIE. Please visit <a href="../events" class="body-link">Events</a> for more information.</p>
+      <p class="bold">Become a Sponsor or an Exhibitor</p>
+      <p class="body">ICMIE attracts a wide range of researchers in the field of mechanics and industrial engineering. As a prominent company in the field of mechanics and industrial engineering, we would like to offer you an exhibit at ICMIE. Please visit <a href="../sponsor" class="body-link">Sponsors</a> for more information.</p>
     </div>
 
   </div>
@@ -289,41 +200,37 @@ mail($my_email,$subject,$message,$headers);
 <div class="unit unit-s-1 unit-m-1-4-1 unit-l-1-4-1">
   <div class="unit-spacer content">
     <p class="body">We have received your message and we will try our best to get back to you within the next 48 hours.<br><br>
-    Thank you for your interest in ICMIE'17.</p>
+    Thank you for your interest in ICMIE'18.</p>
   </div>
 </div>
 
   <div class="unit unit-s-1 unit-m-1-3-1 unit-l-1-3-1">
   <div class="unit-spacer">
     <section class="main">
-        <div class="custom-calendar-wrap">
-          <div id="custom-inner" class="custom-inner">
-            <div class="custom-header clearfix">
-              <nav>
-                <span id="custom-prev" class="custom-prev"></span>
-                <span id="custom-next" class="custom-next"></span>
-              </nav>
-              <h2 id="custom-month" class="custom-month"></h2>
-              <h3 id="custom-year" class="custom-year"></h3>
-            </div>
-            <div id="calendar" class="fc-calendar-container"></div>
-          </div>
-        </div>
-      </section>
+
+      <ul class="side-bar-menu" style="padding:0px;">
+        <li><a href="../sponsor">Sponsors &amp; Exhibitors</a></li>
+        <li><a href="../symposium">Symposium &amp; Workshop</a></li>
+      </ul>
+
+    </section>
+
+    <br><br>
+    
     <h2>Upcoming Dates</h2>
 
 <div class="grid events">
 <div class="unit unit-s-1 unit-m-1-4 unit-l-1-4">
   <div class="date">
-     <div class="past">Dec. 1, 2016</div>
-     Mar. 24, 2017
+     <!-- <div class="past">Dec. 1, 2016</div> -->
+     TBA
   </div>
 </div>
 
 <div class="unit unit-s-1 unit-m-3-4 unit-l-3-4">
   <div class="unit-spacer">
-     <div class="past past-text">Paper Submission Deadline</div>
-     Final Extended Paper Submission Deadline
+     <!-- <div class="past past-text">Paper Submission Deadline</div> -->
+     Paper Submission Deadline
   </div>
 </div>
 </div>
@@ -331,15 +238,15 @@ mail($my_email,$subject,$message,$headers);
 <div class="grid events">
 <div class="unit unit-s-1 unit-m-1-4 unit-l-1-4">
   <div class="date">
-    <div class="past">Feb. 15, 2017</div>
-    Mar. 27, 2017
+    <!-- <div class="past">Feb. 15, 2018</div> -->
+    TBA
   </div>
 </div>
 
 <div class="unit unit-s-1 unit-m-3-4 unit-l-3-4">
   <div class="unit-spacer">
-    <div class="past past-text">Notification of Authors</div> 
-      Final Extended Notification of Authors
+    <!-- <div class="past past-text">Notification of Authors</div> --> 
+      Notification of Authors
   </div>
 </div>
 </div>
@@ -347,14 +254,14 @@ mail($my_email,$subject,$message,$headers);
 <div class="grid events">
 <div class="unit unit-s-1 unit-m-1-4 unit-l-1-4">
   <div class="date">
-    <div class="past">Mar. 1, 2017</div>
-    Apr. 20, 2017
+    <!-- <div class="past">Mar. 1, 2018</div> -->
+    TBA
   </div>
 </div>
 
 <div class="unit unit-s-1 unit-m-3-4 unit-l-3-4">
   <div class="unit-spacer">
-     <div class="past past-text">Final Version of Accepted Submissions Deadline</div> 
+     <!-- <div class="past past-text">Final Version of Accepted Submissions Deadline</div>  -->
      Final Version of Accepted Submissions Deadline
   </div>
 </div>
@@ -370,65 +277,33 @@ mail($my_email,$subject,$message,$headers);
   <div class="unit-spacer">
     <h2>Contact Us</h2>
     <p class="body">International ASET Inc.<br>
-    Unit No. 417, 1376 Bank St.<br>
-    Ottawa, Ontario, Canada<br>
-    Postal Code: K1H 7Y3<br>
-    +1-613-695-3040<br>
+    Unit No. 104, 2442 St. Joseph Blvd.<br>
+    Orl&eacute;ans, Ontario, Canada<br>
+    Postal Code: K1C 1G1<br>
+    +1-613-834-9999<br>
     <a href="mailto:info@icmie.net">info@icmie.net</a></p>
     </div>
   </div>
 
   <div class="unit unit-s-1 unit-m-2-3 unit-l-2-3 contact">
   <div class="unit-spacer">
-  <p class="body">For questions or comments regarding ICMIE'17, please fill out the form below:</p>
+  <p class="body">For questions or comments regarding ICMIE'18, please fill out the form below:</p>
 
-    <form action="../contactus.php" method="post" enctype="multipart/form-data" name="ContactForm">
-  
-  <table border="0" class="contact">
-    <tbody>
-      <tr>
-        <td class="label">Name:</td>
-        <td class="text"><span id="sprytextfield1">
-              <input name="Name" type="text" id="Name" size="40" autocomplete="off">
+    <form action="../contactus.php" method="post" enctype="multipart/form-data" name="ContactForm" class="cf">
+  <div class="half left cf">
+    <input style="margin-bottom:0.85em" type="text" name="Name" id="Name" placeholder="Name" required>
+    <input style="margin-bottom:0.85em" type="email" name="Email" id="Email" placeholder="Email address" required>
+    <input type="text" name="Subject" id="Subject" placeholder="Subject" required>
+  </div>
+  <div class="half right cf">
+    <textarea name="Message" type="text" rows="5" name="Message" id="Message" placeholder="Message" required></textarea>
+  </div><br><br>
+  <center class="full right cf"><div class="g-recaptcha" data-sitekey="6Lcx9g0TAAAAACRpy2HITq2x8MHCeLowy6npA0pl"></div></center>
+  <div class="cf">
+  <center><div class="full right cf"><input type="submit" name="Submit" value="Submit">
+    <input type="reset" name="Reset" value="Reset"></center></div>
+</div></div></form>
 
-              <span class="textfieldRequiredMsg">A value is required.</span></span></td>
-        </tr>
-
-        <tr>
-            <td class="label">Email:</td>
-            <td class="text"><span id="sprytextfield2">
-            <input name="Email" type="text" id="Email" size="40" autocomplete="off">
-            <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldInvalidFormatMsg">Invalid format.</span></span></td>
-          </tr>
-
-          <tr>
-            <td class="label">Confirm Email:</td>
-             <td class="text"><span id="spryconfirm4">
-              <input name="Confirm Email" type="text" id="Confirm Email" size="40" autocomplete="off">
-              <span class="confirmRequiredMsg">A value is required.</span><span class="confirmInvalidMsg">Emails don't match.</span></span></td>
-          </tr>
-
-          <tr>
-            <td class="label">Subject:</td>
-            <td class="text"><span id="sprytextfield3">
-              <input name="Subject" type="text" id="Subject" size="40" autocomplete="off">
-              <span class="textfieldRequiredMsg">A value is required.</span></span></td>
-          </tr>
-
-          <tr>
-            <td valign="top" class="label">Message:</td>
-            <td class="text"><span id="sprytextarea1">
-              <textarea name="Message" id="Message" cols="31" rows="10" autocomplete="off"></textarea>
-              <span class="textareaRequiredMsg">A value is required.</span></span>
-              <center>
-        <input type="submit" name="Submit" value="Submit" accept="image/jpeg">
-        <input type="reset" name="Reset" value="Reset"></center></td>
-          </tr>
-
-        </tbody></table><br>
-
-        
-</form>
     </div>
   </div>
   </div>
@@ -436,7 +311,7 @@ mail($my_email,$subject,$message,$headers);
 
 <div class="copyright">
   <a href="http://international-aset.com">International ASET Inc.</a> | <a href="http://international-aset.com/phplistpublic/?p=subscribe&id=1">Subscribe</a> | <a href="../terms">Terms of Use</a> | <a href="../sitemap">Sitemap</a>
-  <p class="body">&copy; Copyright International ASET Inc., 2016. All rights reserved.</p>
+  <p class="body">© Copyright <script>document.write(new Date().getFullYear())</script>, International ASET Inc. – All Rights Reserved.</p>
   <p class="copyright1">Have any feedback? Please provide them here: <script>var refURL = window.location.protocol + "//" + window.location.host + window.location.pathname; document.write('<a href="http://international-aset.com/feedback/?refURL=' + refURL+'" class="body-link">Feedback</a>');</script></p>
 </div>
 </div>
