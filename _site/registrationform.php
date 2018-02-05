@@ -65,9 +65,9 @@ $headers = "From: " . $_REQUEST['email'];
 
 $your_email = $_REQUEST['email'];
 
-$your_subject = "Your Registration Details for ICMIE'18";
+$your_subject = "Your Registration Details for ICMIE'19";
 
-$your_headers = "From: ICMIE'18 <" . $my_email . ">";
+$your_headers = "From: ICMIE'19 <" . $my_email . ">";
 
 if ((($_FILES["file"]["type"] == "image/gif")
 
@@ -113,7 +113,7 @@ mail($your_email,$your_subject,$message,$your_headers);
 <meta name="robots" content="noarchive">
 <meta name="description" content="">
 <meta name="keywords" content="mechanical engineering conference, robotics conference, energy conference, fluid dynamics conference, cfd conference, industrial engineering conference, mechanics conference, heat transfer, instrumentation, combustion, mechatronics, mems, nanotechnology, renewable energy, solid mechanics, fluid flow, flow, multiphase flow, multiphase heat transfer, turbulent flow, fluid mechanics, mechanical engineering, robotics, energy, fluid dynamics, cfd, industrial engineering, mechanics, heat transfer conference, instrumentation conference, combustion conference, mechatronics conference, mems conference, nanotechnology conference, renewable energy conference, solid mechanics conference, fluid flow conference, flow conference, multiphase flow conference, multiphase heat transfer conference, turbulent flow conference, fluid mechanics conference, Aerodynamics, Aerospace Systems and Technology, Applications of AI Techniques in Design and Manufacturing, Applied Mechanics, Automation, Biomechanics, CAD/CAM/CAE, Computational Fluid Dynamics (CFD), Design and Manufacturing, Energy Management, Fluid Dynamics, Fuels and Combustion, Green Manufacturing, Heat and Mass Transfer, HVAC, Industrial Engineering, Industrial Tribology, Instrumentation and Control, Internal Combustion Engines, Materials Preparation and Processing, Mechanical Engineering, Mechanical Engineering Education, Mechatronics, MEMS, Micro-Machining, Modeling of Processes, Nanotechnology, NEMS, Optimization of Systems, Renewable and Non-Renewable Energies, Reverse Engineering, Robotics, Solid Mechanics, Fundamental rock mechanics, Rock properties, experimental rock mechanics and physical modelling, Analytical and numerical methods in rock mechanics and rock engineering, Stability of slopes in civil and mining engineering, Design methodologies and analysis, Rock dynamics, Rock mechanics and rock engineering at historical sites and monuments, Underground excavations in civil and mining engineering, Coupled processes in rock mass for underground storage and waste disposal, Rock mass characterization, Petroleum geomechanics, Instrumentation-monitoring in rock engineering and back analysis, Risk management, New frontiers (GPS, Extraterrestrial Rock Mechanics, Methane Hydrate Exploitation, CO2 Sequestration, Earthquake Prediction), Solid and structural mechanics, Non-linear mechanics, Composite structures, Fracture and damage mechanics, Geo Mechanics, Vibration and control, Smart structures, Micro and nano-mechanics, Bridge structures, Material modelling, Multi body dynamics, Computational fluid dynamics, Turbulence modelling, Fluid mechanics, Bio-mechanics, Hydrodynamics, Multi-phase flow, Multi-physics problems, Multi-scale modelling, Fluid-structure interaction, Porous media mechanics, Novel computational techniques, High performance computing, Transient dynamic problems, Heat transfer, Artificial Intelligence, Composites, Damage Mechanics, Discontinuous Galerkin, Finite Deformation Mechanics, Fluid Mechanics, Geomechanics, Large Scale Linear Algebra, Meshless Methods, Optics and photonics, PDE and SPDE Solutions, Structural Control, Thermodynamics, Biomechanics, Computational Plasticity, Data Mining, Discrete Element Method, Finite Elements, Fluid-Structure Interaction, CPU and HPC, Material Modelling, Mulitscale Bridging, Optimisation, Phase Field Mechanics, Structural Dynamics, Validation and Verification, Boundary Elements, Contract Mechanics, Domain Decomposition, Error Analysis and Adaptivity, Finite Volumes, Fracture and Failure Mechanics, Instability Analysis, Meshing Techniques, Multiphysics, Particle-based Methods, Solid Mechanics, Turbulence Simulation, Wave Propagation, Fracture Mechanics, Fatigue, Failure Analysis, Corrosion, Creep, Non-linear Problems, Dynamic Fracture, Residual Stress, Environmental Effects, Crack Propagation, Repair Technique, Composite Materials, Ceramics and Polymers, Metallic Materials, Concrete, Probabilistic Apects, Risk Analysis, Damage Tolerance, Fracture Control, Computational Methods, Microstructural and Micromechanical Modelling, Mechatronics Engineering, Modeling and Design, Advanced Manufacturing, Advanced Motion Control, Intelligent Control, System Integration, Sensors and Actuators and Networks, Robotics, Mobile Platforms, Unmanned Vehicles, Automotive and Transportation Systems, Vibration and Noise Control, Micro Mechatronics, Mechatronics in Energy Systems, Fault detection and Diagnosis in Mechatronics Systems, Human-Machine Interface, Applications in Systems and Engineering, Fluid Mechanics, Computational Fluid Mechanics, Aerodynamics, Boundary layers and transition, Buoyant flows, Coastal and ocean fluid dynamics, Environmental flows, Flows with heat transfer, Fluid-structure interaction, Free boundary flows, High-speed and chemically reacting flows, Microfluidics, Eddy Simulation, Multiphase flows, Newtonian and Non-Newtonian flows, Reactive and Combustion flows, Complex Fluids, Fluid-Solid Coupling, Combustion Flows, Flow Simulation, Multiphase Flows, Rock Mechanics, Rock dynamics, Basic property, Constitutive relation, New Theory, Numerical analysis and simulation, Stability and risk analysis of underground engineering, Rock fracture mechanism, Rock blasting, Stability analysis of rock engineering, Monitoring and control of rock engineering, The test of rock dynamic parameters, Solid Mechanics, Boundary element methods, Finite element methods, Discrete element methods, Material Mechanics, Structural dynamics, Contact mechanics and tribology, Dynamic failure and fracture, Fracture and damage mechanics, Biomechanics, Linear and nonlinear dynamics, testing, impact and crashworthiness, Modeling and simulation">
-<title>ICMIE'18 - Registration Form Filled!</title>
+<title>ICMIE'19 - Registration Form Filled!</title>
 
 <meta name="handheldfriendly" content="true">
 <meta name="mobileoptimized" content="240">
@@ -143,7 +143,7 @@ mail($your_email,$your_subject,$message,$your_headers);
 
 <body>
 <nav id="slide-menu">
-  <h1>ICMIE'18</h1>
+  <h1>ICMIE'19</h1>
   <ul>
     <li><a href="/">Home</a></li>
     <li><a href="../papers">Submissions</a></li>
@@ -184,8 +184,8 @@ mail($your_email,$your_subject,$message,$your_headers);
   </div>
 </div>
         <div class="bg">
-          <h1>7<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'18)</h1>
-          <p class="subhead">August 16 - 18, 2018 | Madrid, Spain</p>
+          <h1>8<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'19)</h1>
+          <p class="subhead">August, 2019 | Prague, Czech Republic</p>
 
           <a href="../papers" class="bg-link">Submissions</a> <p class="dot">&middot;</p> <a href="../dates" class="bg-link">Important Dates</a> <p class="dot">&middot;</p> <a href="../registration" class="bg-link">Registration</a>
 
@@ -212,8 +212,8 @@ mail($your_email,$your_subject,$message,$your_headers);
         </div>
 
         <div class="bg">
-          <h1>7<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'18)</h1>
-          <p class="subhead">August 16 - 18, 2018 | Madrid, Spain</p>
+          <h1>8<sup>th</sup> International Conference on Mechanics<br>and Industrial Engineering (ICMIE'19)</h1>
+          <p class="subhead">August, 2019 | Prague, Czech Republic</p>
 
           <a href="../papers" class="bg-link">Submissions</a> <p class="dot">&middot;</p> <a href="../dates" class="bg-link">Important Dates</a> <p class="dot">&middot;</p> <a href="../registration" class="bg-link">Registration</a>
 
@@ -252,7 +252,7 @@ mail($your_email,$your_subject,$message,$your_headers);
 
     <p class="body">If there are any problems in the information you have filled out, please write an email to us at <a href="mailto:registration@icmie.net" class="body-link">registration@icmie.net</a> mentioning the mistakes made. Please note that you SHOULD NOT refill the form.</p>
 
-  <p class="body">We are looking forward to seeing you at ICMIE'18!</p>
+  <p class="body">We are looking forward to seeing you at ICMIE'19!</p>
   </div>
 </div>
 
@@ -279,7 +279,7 @@ mail($your_email,$your_subject,$message,$your_headers);
 
   <div class="unit unit-s-1 unit-m-2-3 unit-l-2-3 contact">
   <div class="unit-spacer">
-  <p class="body">For questions or comments regarding ICMIE'18, please fill out the form below:</p>
+  <p class="body">For questions or comments regarding ICMIE'19, please fill out the form below:</p>
 
     <form action="../contactus.php" method="post" enctype="multipart/form-data" name="ContactForm" class="cf">
   <div class="half left cf">
